@@ -3,6 +3,5 @@ node_modules
 out
 dist
 build
-cdk.out
 *.d.ts
 pnpm-lock.yaml

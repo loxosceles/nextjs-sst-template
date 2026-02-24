@@ -1,6 +1,6 @@
 # __PROJECT_NAME__
 
-Next.js frontend with SST v3 infrastructure (CloudFront + Lambda@Edge, SSR).
+Next.js frontend with SST v4 infrastructure (CloudFront + Lambda, SSR).
 
 ## Bootstrap
 
