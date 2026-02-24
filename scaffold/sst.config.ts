@@ -1,15 +1,10 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
-import pkg from "./package.json";
-
-if (!process.env.AWS_REGION) {
-  throw new Error("AWS_REGION is required. Set in .env.{stage} or shell environment.");
-}
-
-const openNextVersion = pkg.devDependencies["@opennextjs/aws"].replace(/^\^/, "");
-
 export default $config({
   app(input) {
+    if (!process.env.AWS_REGION) {
+      throw new Error("AWS_REGION is required. Set in .env.{stage} or shell environment.");
+    }
     return {
       name: "__PROJECT_NAME__",
       home: "aws",
@@ -21,11 +16,13 @@ export default $config({
     };
   },
   async run() {
+    const pkg = await import("./package.json");
+    const openNextVersion = pkg.devDependencies["@opennextjs/aws"].replace(/^\^/, "");
     const isProd = $app.stage === "prod";
 
     const site = new sst.aws.Nextjs("Web", {
       path: "frontend/",
-      openNextVersion: openNextVersion,
+      openNextVersion,
       buildCommand: "bash ../scripts/build-open-next.sh",
       domain:
         isProd && process.env.PROD_DOMAIN_NAME
