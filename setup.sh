@@ -12,6 +12,15 @@ err()  { echo -e "${RED}✗ $*${NC}" >&2; }
 ok()   { echo -e "${GREEN}✓ $*${NC}"; }
 info() { echo -e "${YELLOW}ℹ $*${NC}"; }
 
+# ─── Portable sed -i ─────────────────────────────────────────────────────────
+sedi() {
+  if sed --version >/dev/null 2>&1; then
+    sed -i "$@"
+  else
+    sed -i '' "$@"
+  fi
+}
+
 # ─── Guard: empty directory only ─────────────────────────────────────────────
 shopt -s dotglob nullglob
 files=(*)
@@ -114,7 +123,7 @@ export default nextConfig;
 NEXTCONF
 
 # Exclude vitest.config.ts from Next.js type checking
-sed -i '' 's/"exclude": \["node_modules"\]/"exclude": ["node_modules", "vitest.config.ts"]/' frontend/tsconfig.json
+sedi 's/"exclude": \["node_modules"\]/"exclude": ["node_modules", "vitest.config.ts"]/' frontend/tsconfig.json
 
 # Restore template additions
 cp -r frontend-additions/app/__tests__ frontend/app/
@@ -163,7 +172,7 @@ curl -fsSL "$VERSIONING_TEMPLATE_URL" | tar -xz \
 
 # ─── Patch project name ───────────────────────────────────────────────────────
 info "Patching project name..."
-_sed() { sed -i '' "s/__PROJECT_NAME__/${PROJECT_NAME}/g" "$1"; }
+_sed() { sedi "s/__PROJECT_NAME__/${PROJECT_NAME}/g" "$1"; }
 _sed sst.config.ts
 _sed package.json
 _sed README.md
@@ -171,7 +180,10 @@ _sed README.md
 # ─── Generate devcontainer.json ───────────────────────────────────────────────
 info "Generating devcontainer.json..."
 
-CONTAINER_HOME="/home/node"
+# Detect container user from downloaded Dockerfile
+CONTAINER_USER=$(grep -m1 '^USER ' .devcontainer/Dockerfile 2>/dev/null | awk '{print $2}')
+CONTAINER_USER="${CONTAINER_USER:-node}"
+CONTAINER_HOME="/home/${CONTAINER_USER}"
 
 if [[ "$SSH_MODE" == "contexts" ]]; then
   SSH_MOUNT="{\"type\":\"bind\",\"source\":\"\${localEnv:HOME}/.ssh/contexts/${SSH_CONTEXT}\",\"target\":\"${CONTAINER_HOME}/.ssh/contexts/${SSH_CONTEXT}\"}"
@@ -257,7 +269,7 @@ git init
 _upsert_config() {
   local key="$1" value="$2" file="$3"
   if grep -q "^${key}=" "$file" 2>/dev/null; then
-    sed -i '' "s|^${key}=.*|${key}=\"${value}\"|" "$file"
+    sedi "s|^${key}=.*|${key}=\"${value}\"|" "$file"
   else
     echo "${key}=\"${value}\"" >> "$file"
   fi
