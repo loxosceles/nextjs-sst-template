@@ -212,6 +212,7 @@ d['containerEnv']['GIT_NAME'] = '${GIT_NAME:-}'
 d['containerEnv']['GIT_EMAIL'] = '${GIT_EMAIL:-}'
 d['mounts'] = json.loads('${MOUNTS}')
 d.pop('runArgs', None)
+d.pop('appPort', None)
 with open('.devcontainer/devcontainer.json', 'w') as f:
     json.dump(d, f, indent=2)
 PYEOF
