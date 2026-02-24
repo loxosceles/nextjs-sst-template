@@ -101,8 +101,7 @@ fi
 
 # ─── Pull template files ──────────────────────────────────────────────────────
 info "Downloading template files..."
-curl -fsSL "$TEMPLATE_REPO" | tar -xz --strip-components=1 \
-  --exclude='setup.sh' --exclude='.git'
+curl -fsSL "$TEMPLATE_REPO" | tar -xz --strip-components=2 -C . "*/scaffold/"
 
 # ─── Create Next.js app ───────────────────────────────────────────────────────
 info "Creating Next.js app..."
