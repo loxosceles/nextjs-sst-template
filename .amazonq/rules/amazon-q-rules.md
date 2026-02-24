@@ -61,29 +61,30 @@ If you forget, developer will say `ryr` (read your rules) and you must confirm a
 
 ## Technology Stack
 
-- **Frontend**: Next.js (App Router, static export)
-- **Infrastructure**: AWS CDK (TypeScript) — CloudFront + S3
+- **Frontend**: Next.js (App Router, SSR via OpenNext)
+- **Infrastructure**: SST v4 (Pulumi under the hood) — CloudFront + Lambda + S3 + DynamoDB
 - **Package Manager**: pnpm (workspaces)
 - **Testing**: Vitest
-- **CI/CD**: GitHub Actions + AWS CodePipeline
+- **CI/CD**: GitHub Actions + OIDC → `sst deploy`
 
 ## Key Patterns
 
-- Bootstrap config: `infrastructure/.env.{stage}` (local) or CI env vars → `EnvironmentManager`
-- Runtime config: SSM Parameter Store under `/{project}/{stage}/`
-- CLI: 2-tier (`bin/` → `commands/`), stubs until `@loxosceles/cdk-cli-core` is published
-- Single source of truth for project identity: `infrastructure/configs/project.config.ts`
+- Bootstrap config: `.env.{stage}` at project root (SST loads automatically)
+- Infrastructure: `sst.config.ts` at project root (no separate infra directory)
+- Domain config: `PROD_DOMAIN_NAME` + `CERTIFICATE_ARN` env vars for prod
+- OpenNext version: `@opennextjs/aws` in root `package.json` (single source of truth)
 
 ## Common Commands
 
 ```bash
 pnpm dev              # Start Next.js dev server
-pnpm build            # Build static export
+pnpm build            # Build Next.js (Turbopack)
 pnpm lint             # ESLint
 pnpm test             # All tests
-pnpm synth            # CDK synth
-pnpm deploy:dev       # Deploy dev
-pnpm deploy:prod      # Deploy prod
+pnpm deploy:dev       # sst deploy --stage dev
+pnpm deploy:prod      # sst deploy --stage prod
+pnpm destroy:dev      # sst remove --stage dev
+sst dev               # Live dev mode (SSR + Lambda against real AWS)
 ```
 
 ## When in Doubt
