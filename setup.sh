@@ -180,7 +180,7 @@ _sed README.md
 info "Generating devcontainer.json..."
 
 # Detect container user from downloaded Dockerfile
-CONTAINER_USER=$(grep -m1 '^USER ' .devcontainer/Dockerfile 2>/dev/null | awk '{print $2}')
+CONTAINER_USER=$(grep -m1 '^USER ' .devcontainer/Dockerfile 2>/dev/null | awk '{print $2}' || true)
 CONTAINER_USER="${CONTAINER_USER:-node}"
 CONTAINER_HOME="/home/${CONTAINER_USER}"
 
