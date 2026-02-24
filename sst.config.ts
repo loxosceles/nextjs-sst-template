@@ -1,5 +1,13 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
+import pkg from "./package.json";
+
+if (!process.env.AWS_REGION) {
+  throw new Error("AWS_REGION is required. Set in .env.{stage} or shell environment.");
+}
+
+const openNextVersion = pkg.devDependencies["@opennextjs/aws"].replace(/^\^/, "");
+
 export default $config({
   app(input) {
     return {
@@ -17,7 +25,7 @@ export default $config({
 
     const site = new sst.aws.Nextjs("Web", {
       path: "frontend/",
-      openNextVersion: "3.9.16",
+      openNextVersion: openNextVersion,
       buildCommand: "bash ../scripts/build-open-next.sh",
       domain:
         isProd && process.env.PROD_DOMAIN_NAME
