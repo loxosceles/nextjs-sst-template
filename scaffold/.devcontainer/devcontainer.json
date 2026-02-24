@@ -51,7 +51,6 @@
       }
     }
   },
-  "runArgs": ["--env-file", ".devcontainer/.env"],
   "mounts": [
     // SSH — always included. setup.sh picks contexts or default mode.
     // CONTEXTS MODE: { "type": "bind", "source": "${localEnv:HOME}/.ssh/contexts/<SSH_CONTEXT>", "target": "/home/node/.ssh/contexts/<SSH_CONTEXT>" }
