@@ -17,6 +17,8 @@ export default $config({
 
     const site = new sst.aws.Nextjs("Web", {
       path: "frontend/",
+      openNextVersion: "3.9.16",
+      buildCommand: "bash ../scripts/build-open-next.sh",
       domain:
         isProd && process.env.PROD_DOMAIN_NAME
           ? {
