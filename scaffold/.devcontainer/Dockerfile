@@ -6,10 +6,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     neovim ranger tmux direnv zsh \
     && apt-get clean
 
-RUN chsh -s /usr/bin/zsh vscode
+RUN chsh -s /usr/bin/zsh node
 
-USER vscode
-WORKDIR /home/vscode
+USER node
+WORKDIR /home/node
 
-COPY --chown=vscode:vscode post_create.sh /usr/src/
+COPY --chown=node:node post_create.sh /usr/src/
 RUN chmod +x /usr/src/post_create.sh

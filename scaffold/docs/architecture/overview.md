@@ -3,7 +3,7 @@
 ## Stack
 
 - **Next.js** (App Router, TypeScript, Tailwind CSS) — SSR via OpenNext
-- **SST v3** — infrastructure as code (Pulumi under the hood)
+- **SST v4** — infrastructure as code (Pulumi under the hood)
 - **AWS** — CloudFront + Lambda (SSR) + S3 (assets) + DynamoDB (ISR revalidation)
 
 ## How It Deploys

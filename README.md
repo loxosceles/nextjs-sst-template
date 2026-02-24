@@ -1,6 +1,6 @@
-# __PROJECT_NAME__
+# nextjs-sst-template
 
-Next.js frontend with SST v3 infrastructure (CloudFront + Lambda@Edge, SSR).
+Project template for Next.js + SST v4 (SSR via OpenNext on AWS).
 
 ## Bootstrap
 
@@ -12,10 +12,28 @@ curl -fsSL https://raw.githubusercontent.com/loxosceles/nextjs-sst-template/main
 
 The directory name becomes the project name. No cloning required.
 
-## Documentation
+## Repository Structure
 
-- [Architecture Overview](docs/architecture/overview.md)
-- [Local Development](docs/guides/local-development.md)
-- [Deployment](docs/guides/deployment.md)
-- [Commands Reference](docs/reference/commands.md)
-- [Environment Variables](docs/reference/environment-variables.md)
+```
+├── setup.sh                         # Bootstrap script (entry point)
+├── devcontainer-defaults.env.template  # Host config template
+└── scaffold/                        # Project files (copied into new projects)
+    ├── sst.config.ts
+    ├── package.json
+    ├── frontend/
+    ├── .github/workflows/
+    ├── docs/
+    └── ...
+```
+
+`scaffold/` contains everything that becomes part of the instantiated project. Template-level files (this README, setup.sh, LICENSE) stay at the root and are not copied.
+
+## Project Documentation
+
+After bootstrapping, see the project's docs:
+
+- [Architecture Overview](scaffold/docs/architecture/overview.md)
+- [Local Development](scaffold/docs/guides/local-development.md)
+- [Deployment](scaffold/docs/guides/deployment.md)
+- [Commands Reference](scaffold/docs/reference/commands.md)
+- [Environment Variables](scaffold/docs/reference/environment-variables.md)
