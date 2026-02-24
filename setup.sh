@@ -100,6 +100,7 @@ info "Creating Next.js app..."
 mv frontend frontend-additions
 npx create-next-app@latest frontend --typescript --tailwind --app --no-src-dir --import-alias "@/*" --no-git --no-eslint --use-pnpm --skip-install --yes
 [ -d frontend/.git ] && rm -rf frontend/.git
+[ -f frontend/pnpm-lock.yaml ] && rm frontend/pnpm-lock.yaml
 
 # Patch next.config.ts for SSR (no static export)
 cat > frontend/next.config.ts <<'NEXTCONF'
@@ -136,6 +137,15 @@ pkg.devDependencies = {
   'vitest': '^3'
 };
 fs.writeFileSync('frontend/package.json', JSON.stringify(pkg, null, 2) + '\n');
+"
+
+# Pin root next version to match frontend (Turbopack needs next resolvable from workspace root)
+node -e "
+const fs = require('fs');
+const v = JSON.parse(fs.readFileSync('frontend/package.json', 'utf8')).dependencies.next;
+const root = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+root.devDependencies.next = v;
+fs.writeFileSync('package.json', JSON.stringify(root, null, 2) + '\n');
 "
 
 info "Downloading devcontainer files..."
