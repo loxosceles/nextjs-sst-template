@@ -63,7 +63,7 @@
     // { "type": "bind", "source": "<ZSH_CONFIG_PATH>", "target": "/home/node/.config/zsh" },
 
     // tmux config — opt-in
-    // { "type": "bind", "source": "<TMUX_CONFIG_PATH>", "target": "/home/node/.tmux" },
+    // { "type": "bind", "source": "<TMUX_CONFIG_PATH>", "target": "/home/node/.config/tmux" },
 
     // ZSH history — opt-in
     // { "type": "bind", "source": "<ZSH_HISTORY_PATH>", "target": "/home/node/.zsh_history" },
